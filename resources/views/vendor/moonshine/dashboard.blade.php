@@ -9,23 +9,22 @@
         'items' => ['#' => __('moonshine::ui.dashboard')]
     ])
 @endsection
-<script src="/assets/js/html5-qrcode.min.js"></script>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 @section('content')
 <div id="reader"></div>
 <script>
-var html5QrcodeScanner = new Html5QrcodeScanner(
-  "reader", { fps: 10, qrbox: 250 });
-
-function onScanSuccess(qrCodeMessage) {
-    window.location.href = qrCodeMessage;
-}
-
-function onScanError(errorMessage) {
-    console.log(errorMessage);
-}
-
-html5QrcodeScanner.render(onScanSuccess, onScanError, { facingMode: 'environment' }); // Запускаем сканирование с задней камеры
+Telegram.WebApp.showScanQrPopup({
+    text: 'Scan QR'
+}, function (text) {
+    const lowerText = text.toString().toLowerCase();
+    if (lowerText.substring(0, 7) === 'http://' ||
+        lowerText.substring(0, 8) === 'https://'
+    ) {
+        window.location.href = text;
+    }
+    return true;
+});
 </script>
 @endsection
 
