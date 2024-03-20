@@ -6,14 +6,14 @@
         <style>
             .pdf {
                 position: fixed;
-                left: 30px;
-                bottom: 145px;
+                right: 180px;
+                bottom: 450px;
             }
         </style>
     </head>
     <body>
         <div class="pdf">
-            <img src="data:image/png;base64,{{ $qrcode }}" style="border: 2px solid white;">
+            <img src="data:image/png;base64,{{ $qrcode }}">
         </div>
     </body>
 </html>

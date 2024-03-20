@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\MoonShine\Resources\DepartmentResource;
 use App\MoonShine\Resources\EmployeeResource;
+use App\MoonShine\Resources\ReferalResource;
+
 use App\MoonShine\Resources\UserRoleResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
@@ -18,6 +20,9 @@ class MoonShineServiceProvider extends ServiceProvider
     {
         app(MoonShine::class)->menu([
             MenuItem::make('moonshine::ui.resource.employees', new EmployeeResource())
+                ->translatable()
+                ->icon('heroicons.identification'),
+            MenuItem::make('moonshine::ui.resource.refs', new ReferalResource())
                 ->translatable()
                 ->icon('heroicons.identification'),
             MenuItem::make('moonshine::ui.resource.deparments', new DepartmentResource())

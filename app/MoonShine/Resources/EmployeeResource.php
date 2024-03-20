@@ -10,6 +10,7 @@ use MoonShine\Fields\ID;
 use MoonShine\Actions\FiltersAction;
 use MoonShine\Actions\ImportAction;
 use MoonShine\Fields\BelongsTo;
+use MoonShine\Fields\HasMany;
 use MoonShine\Fields\Email;
 use MoonShine\Fields\NoInput;
 use MoonShine\Fields\SwitchBoolean;
@@ -23,6 +24,7 @@ class EmployeeResource extends Resource
 	public static string $model = Employee::class;
 
 	public static string $orderType = 'ASC';
+    public string $titleField = 'name'; 
 
     public static array $activeActions = ['show', 'edit'];
 
@@ -54,35 +56,46 @@ class EmployeeResource extends Resource
                 ->useOnImport()
                 ->showOnExport(),
 
-            BelongsTo::make(trans('moonshine::ui.resource.department'), 'department', new DepartmentResource())
-                ->searchable()
-                ->required()
-                ->useOnImport()
-                ->showOnExport(),
+          
+            
 
-            Email::make(trans('moonshine::ui.resource.email'),'email')
-                ->nullable(true)
-                ->useOnImport()
-                ->showOnExport(),
+                HasMany::make(trans('moonshine::ui.resource.ref'), 'referal', new ReferalResource())
 
-            SwitchBoolean::make(trans('moonshine::ui.resource.is_registered'), 'is_registered')
-                ->hideOnForm()
-                ->autoUpdate(false),
+            ->fields([
+                ID::make(),
+                Text::make('name')->required(),
+                Text::make('phone')->required(),
+                Text::make('email')->required(),
 
-            NoInput::make(trans('moonshine::ui.resource.is_registered'), 'is_registered', static fn($item) => $item->is_registered ? 'Да' : 'Нет')
-                ->hideOnForm()
-                ->hideOnDetail()
-                ->hideOnIndex()
-                ->showOnExport(),
+            ])
+            ->resourceMode()
+            ->hideOnIndex()
+            ->hideOnDetail(),
 
-            NoInput::make(trans('moonshine::ui.resource.registered'), 'registered', static fn($item) => $item->registered?->diffForHumans())
-                ->hideOnForm(),
 
-            NoInput::make(trans('moonshine::ui.resource.registered'), 'registered', static fn($item) => $item->registered)
-                ->hideOnForm()
-                ->hideOnDetail()
-                ->hideOnIndex()
-                ->showOnExport(),
+            // Email::make(trans('moonshine::ui.resource.email'),'email')
+            //     ->nullable(true)
+            //     ->useOnImport()
+            //     ->showOnExport(),
+
+            // SwitchBoolean::make(trans('moonshine::ui.resource.is_registered'), 'is_registered')
+            //     ->hideOnForm()
+            //     ->autoUpdate(false),
+
+            // NoInput::make(trans('moonshine::ui.resource.is_registered'), 'is_registered', static fn($item) => $item->is_registered ? 'Да' : 'Нет')
+            //     ->hideOnForm()
+            //     ->hideOnDetail()
+            //     ->hideOnIndex()
+            //     ->showOnExport(),
+
+            // NoInput::make(trans('moonshine::ui.resource.registered'), 'registered', static fn($item) => $item->registered?->diffForHumans())
+            //     ->hideOnForm(),
+
+            // NoInput::make(trans('moonshine::ui.resource.registered'), 'registered', static fn($item) => $item->registered)
+            //     ->hideOnForm()
+            //     ->hideOnDetail()
+            //     ->hideOnIndex()
+            //     ->showOnExport(),
 
             SwitchBoolean::make(trans('moonshine::ui.resource.is_passed'), 'is_passed')
                 ->hideOnForm(),
@@ -135,12 +148,12 @@ class EmployeeResource extends Resource
                 ])
                 ->nullable(),
 
-            SelectFilter::make(trans('moonshine::ui.resource.all_registered'), 'is_registered')
-                ->options([
-                    '1' => trans('moonshine::ui.yes'),
-                    '0' => trans('moonshine::ui.no')
-                ])
-                ->nullable()
+            // SelectFilter::make(trans('moonshine::ui.resource.all_registered'), 'is_registered')
+            //     ->options([
+            //         '1' => trans('moonshine::ui.yes'),
+            //         '0' => trans('moonshine::ui.no')
+            //     ])
+            //     ->nullable()
         ];
     }
 
@@ -149,14 +162,14 @@ class EmployeeResource extends Resource
         return [
             FiltersAction::make(trans('moonshine::ui.filters')),
             ExportAction::make('Экспорт'),
-            ImportAction::make('Импорт')
+            // ImportAction::make('Импорт')
         ];
     }
 
     public function components(): array
     {
         return [
-            ChangeLogFormComponent::make('Change log'),
+            ChangeLogFormComponent::make('История действий'),
         ];
     }
 }

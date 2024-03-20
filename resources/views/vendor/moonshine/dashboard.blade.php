@@ -3,17 +3,19 @@
 @section('title', config("moonshine.title"))
 
 @section("header-inner")
-    @parent
+@parent
 
-    @include('moonshine::layouts.shared.breadcrumbs', [
-        'items' => ['#' => __('moonshine::ui.dashboard')]
-    ])
+@include('moonshine::layouts.shared.breadcrumbs', [
+'items' => ['#' => __('moonshine::ui.dashboard')]
+])
 @endsection
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 @section('content')
 <div id="reader"></div>
 <script>
+    let tg = window.Telegram.WebApp;
+    tg.expand();
 Telegram.WebApp.showScanQrPopup({
     text: 'Scan QR'
 }, function (text) {
@@ -27,4 +29,3 @@ Telegram.WebApp.showScanQrPopup({
 });
 </script>
 @endsection
-

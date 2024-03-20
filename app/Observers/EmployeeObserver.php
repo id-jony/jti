@@ -29,7 +29,9 @@ class EmployeeObserver
     {
         $qr_code = base64_encode(
             QrCode::format('svg')
-                ->size(230)
+                ->size(600)
+                ->color(218, 90, 1)
+                ->backgroundColor(0, 0, 0, 0)
                 ->errorCorrection('H')
                 ->generate(route('qr', ['code' => $employee->id.'|'.$employee->uuid]))
             );
@@ -37,8 +39,8 @@ class EmployeeObserver
             'qrcode' => $qr_code
         ];
         $pdf = PDF::loadView('pdf', $data);
-        $pdf->getDomPDF()->getCanvas()->image(public_path('pdf.png'), 0, 0, 595, 842);
-        $pdf->save(storage_path('/pdf/'.$employee->uuid.'.pdf'));
+        $pdf->getDomPDF()->getCanvas()->image(public_path('pdf.png'), 0, 0, 800, 1422);
+        $pdf->save(storage_path('/pdf/'.$employee->name.'.pdf'));
     }
 
     public function updating(Employee $employee)
